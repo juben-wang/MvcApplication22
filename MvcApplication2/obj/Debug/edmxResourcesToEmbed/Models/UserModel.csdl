@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="UserModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="UserModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="User" EntityType="UserModel.User" />
+    <EntitySet Name="Email" EntityType="UserModel.Email" />
+    <AssociationSet Name="UserEmail" Association="UserModel.UserEmail">
+      <End Role="User" EntitySet="User" />
+      <End Role="Email" EntitySet="Email" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Email" Relationship="UserModel.UserEmail" FromRole="User" ToRole="Email" />
+  </EntityType>
+  <EntityType Name="Email">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Value" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="UserModel.UserEmail" FromRole="Email" ToRole="User" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+  </EntityType>
+  <Association Name="UserEmail">
+    <End Type="UserModel.User" Role="User" Multiplicity="1" />
+    <End Type="UserModel.Email" Role="Email" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Email">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
